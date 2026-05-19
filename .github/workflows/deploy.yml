@@ -1,0 +1,23 @@
+name: Deploy via Script Externo
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # Permite executar manualmente
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Baixar código
+        uses: actions/checkout@v4
+      
+      - name: 🔧 Configurar permissões
+        run: chmod +x scripts/*.sh
+      
+      - name: 🚀 Executar deploy
+        run: ./scripts/deploy.sh
+        env:
+          DEPLOY_ENV: production
+          TIMESTAMP: $(date +%s)
